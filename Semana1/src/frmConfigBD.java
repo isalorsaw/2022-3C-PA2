@@ -97,9 +97,13 @@ public class frmConfigBD extends JFrame {
 	public void cargarDatos()
 	{
 		Archivo a=new Archivo("src/Archivos/config.txt");
-		//String info=a.traeString();
-		//JOptionPane.showMessageDialog(null,info);
 		String info=a.traeLinea(2);
-		JOptionPane.showMessageDialog(null,info);
+		
+		String arr[]=info.split(";");
+		txtubicacion.setText(arr[0]);
+		txtbd.setText(arr[1]);
+		txtusuario.setText(arr[2]);
+		txtclave.setText(arr[3]);
+		
 	}
 }
