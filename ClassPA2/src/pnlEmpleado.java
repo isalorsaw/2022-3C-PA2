@@ -11,7 +11,6 @@ public class pnlEmpleado extends JPanel {
 	public pnlEmpleado() {
 		setSize(607, 406);
 		setLayout(null);
-		setSize(500,500);
 		
 		JLabel lblNewLabel = new JLabel("Mantenimiento de Empleado");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
