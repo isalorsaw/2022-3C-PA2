@@ -52,7 +52,7 @@ public class frmPrincipal extends JFrame {
 		
 		JLabel lblNewLabel = new JLabel("Pantalla Principal Sistema de Inventario");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 28));
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 28));
 		lblNewLabel.setBounds(166, 27, 655, 34);
 		pnlTitulo.add(lblNewLabel);
 		
