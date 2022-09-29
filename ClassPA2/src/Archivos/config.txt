@@ -1,2 +1,0 @@
-ubicacion;basededatos;usuario;clave;
-localhost;bdinventario;root;olimpia;
