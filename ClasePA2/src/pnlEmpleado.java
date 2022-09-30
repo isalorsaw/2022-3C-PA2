@@ -5,6 +5,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
+import com.toedter.calendar.JDateChooser;
 
 public class pnlEmpleado extends JPanel {
 	private JTextField textField;
@@ -12,6 +13,12 @@ public class pnlEmpleado extends JPanel {
 	private JComboBox textField_2;
 	private JTextField textField_3;
 	private JTextField textField_4;
+	private JComboBox textField_5;
+	private JComboBox textField_6;
+	private JTextField txtdate;
+	private JTextField txtdate2;
+	private JDateChooser dfechan;
+	private JDateChooser dfechai;
 
 	/**
 	 * Create the panel.
@@ -97,5 +104,53 @@ public class pnlEmpleado extends JPanel {
 		textField_4.setColumns(10);
 		textField_4.setBounds(145, 262, 274, 20);
 		add(textField_4);
+		
+		JLabel lblNewLabel_1_1_1_1_1_1 = new JLabel("Genero");
+		lblNewLabel_1_1_1_1_1_1.setBounds(26, 212, 118, 14);
+		add(lblNewLabel_1_1_1_1_1_1);
+		
+		textField_5 = new JComboBox();
+		textField_5.setBounds(399, 209, 134, 20);
+		add(textField_5);
+		
+		JLabel lblNewLabel_1_1_1_1_2 = new JLabel("Estado Civil");
+		lblNewLabel_1_1_1_1_2.setBounds(293, 214, 109, 14);
+		add(lblNewLabel_1_1_1_1_2);
+		
+		JComboBox textField_5_1 = new JComboBox();
+		textField_5_1.setBounds(145, 209, 134, 20);
+		add(textField_5_1);
+		
+		JLabel lblNewLabel_1_1_1_1_1_1_1 = new JLabel("Movil");
+		lblNewLabel_1_1_1_1_1_1_1.setBounds(26, 293, 118, 14);
+		add(lblNewLabel_1_1_1_1_1_1_1);
+		
+		JTextField textField_5_1_1 = new JTextField();
+		textField_5_1_1.setBounds(145, 290, 134, 20);
+		add(textField_5_1_1);
+		
+		JLabel lblNewLabel_1_1_1_1_2_1 = new JLabel("Otro");
+		lblNewLabel_1_1_1_1_2_1.setBounds(293, 295, 109, 14);
+		add(lblNewLabel_1_1_1_1_2_1);
+		
+		JComboBox textField_5_2 = new JComboBox();
+		textField_5_2.setBounds(399, 293, 134, 20);
+		add(textField_5_2);
+		
+		JLabel lblNewLabel_1_1_1_1_1_1_1_1 = new JLabel("Estado");
+		lblNewLabel_1_1_1_1_1_1_1_1.setBounds(26, 321, 118, 14);
+		add(lblNewLabel_1_1_1_1_1_1_1_1);
+		
+		textField_6 = new JComboBox();
+		textField_6.setBounds(145, 318, 134, 20);
+		add(textField_6);
+		
+		dfechan = new JDateChooser();
+		dfechan.setBounds(145, 186, 138, 20);
+		add(dfechan);
+		
+		dfechai = new JDateChooser();
+		dfechai.setBounds(399, 186, 138, 20);
+		add(dfechai);
 	}
 }
