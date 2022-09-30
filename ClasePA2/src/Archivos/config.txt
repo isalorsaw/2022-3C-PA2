@@ -1,2 +1,2 @@
 ubicacion;basededatos;usuario;clave;
-localhost;bdinventario;root;olimpia;
+localhost;colinsoft;root;olimpia;
