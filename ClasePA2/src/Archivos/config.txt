@@ -1,2 +1,2 @@
 ubicacion;basededatos;usuario;clave;
-localhost;colinsoft;root;olimpia;
+localhost;clasepa2;root;olimpia;
