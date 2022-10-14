@@ -6,13 +6,16 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import com.toedter.calendar.JDateChooser;
+
+import Clases.BaseDatos;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class pnlEmpleado extends JPanel {
 	private JTextField txtidentidad;
 	private JTextField txtnombre, txtmovil, txtotro;
-	private JComboBox cmbdepto,cmbgenero;
+	private JComboBox cmbdepto,cmbgenero,cmbdeptoi;
 	private JTextField txtdireccion;
 	private JTextField txtcorreoe;
 	private JComboBox cmbestadoc;
@@ -101,6 +104,7 @@ public class pnlEmpleado extends JPanel {
 		lblNewLabel_1_1_1.setBounds(26, 164, 109, 14);
 		add(lblNewLabel_1_1_1);
 		
+		cmbdeptoi=new JComboBox();
 		cmbdepto = new JComboBox();
 		cmbdepto.setBounds(145, 161, 274, 20);
 		add(cmbdepto);
@@ -131,11 +135,13 @@ public class pnlEmpleado extends JPanel {
 		txtcorreoe.setBounds(145, 262, 274, 20);
 		add(txtcorreoe);
 		
+		
 		JLabel lblNewLabel_1_1_1_1_1_1 = new JLabel("Genero");
 		lblNewLabel_1_1_1_1_1_1.setBounds(26, 212, 118, 14);
 		add(lblNewLabel_1_1_1_1_1_1);
 		
-		cmbestadoc = new JComboBox();
+		String d[]= {"[Seleccione un Estado Civil]","Casado(a)","Soltero(a)","Union Libre","Viudo(a)","Divorciado(a)"};
+		cmbestadoc = new JComboBox(d);
 		cmbestadoc.setBounds(399, 209, 134, 20);
 		add(cmbestadoc);
 		
@@ -143,7 +149,8 @@ public class pnlEmpleado extends JPanel {
 		lblNewLabel_1_1_1_1_2.setBounds(293, 214, 109, 14);
 		add(lblNewLabel_1_1_1_1_2);
 		
-		cmbgenero = new JComboBox();
+		String e[]= {"[Seleccione un Genero]","Masculino","Femenino"};
+		cmbgenero = new JComboBox(e);
 		cmbgenero.setBounds(145, 209, 134, 20);
 		add(cmbgenero);
 		
@@ -167,7 +174,8 @@ public class pnlEmpleado extends JPanel {
 		lblNewLabel_1_1_1_1_1_1_1_1.setBounds(26, 321, 118, 14);
 		add(lblNewLabel_1_1_1_1_1_1_1_1);
 		
-		cmbestado = new JComboBox();
+		String f[]= {"[Seleccione un Estado]","ACTIVO","INACTIVO"};
+		cmbestado = new JComboBox(f);
 		cmbestado.setBounds(145, 318, 134, 20);
 		add(cmbestado);
 		
@@ -183,15 +191,20 @@ public class pnlEmpleado extends JPanel {
 	{
 		txtidentidad.setText("");
 		txtnombre.setText("");
-		//cmbdepto.setSelectedIndex(0);
-		//dfechan.
-		//dfechai.
+		
+		java.util.Date date = new java.util.Date();
+		dfechan.setDate(date);
+		dfechai.setDate(date);
+		
 		txtdireccion.setText("");
 		txtcorreoe.setText("");
-		//cmbestadoc.setSelectedIndex(0);
-		//cmbgenero.setSelectedIndex(0);
+		cmbestadoc.setSelectedIndex(0);
+		cmbgenero.setSelectedIndex(0);
 		txtmovil.setText("");
 		txtotro.setText("");
-		//cmbestado.setSelectedIndex(0);
+		cmbestado.setSelectedIndex(0);
+		new BaseDatos().llenarComboBox(cmbdeptoi,cmbdepto,
+		"SELECT depto_codigo,depto_nombre FROM tbl_departamento ORDER BY depto_nombre",
+		"[Seleccione un Departamento]");
 	}
 }
