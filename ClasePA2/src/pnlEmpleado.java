@@ -1,5 +1,7 @@
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
@@ -79,8 +81,14 @@ public class pnlEmpleado extends JPanel {
 		add(btnRestaurar);
 		
 		btnGuardar = new JButton("Guardar");
+		btnGuardar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				eventoguardar();
+			}
+		});
 		btnGuardar.setBounds(262, 372, 140, 23);
 		add(btnGuardar);
+		btnGuardar.setVisible(false);
 		
 		JLabel lblNewLabel_1 = new JLabel("Identidad");
 		lblNewLabel_1.setBounds(26, 111, 109, 14);
@@ -206,5 +214,28 @@ public class pnlEmpleado extends JPanel {
 		new BaseDatos().llenarComboBox(cmbdeptoi,cmbdepto,
 		"SELECT depto_codigo,depto_nombre FROM tbl_departamento ORDER BY depto_nombre",
 		"[Seleccione un Departamento]");
+		btnGuardar.setVisible(true);
+	}
+	public void eventoguardar()
+	{
+		if(btnGuardar.getText().equals("GUARDAR"))
+		{
+			//JOptionPane.showMessageDialog(null,"Guardar");
+			//Validar los campos
+			int deptoi=Integer.parseInt(cmbdeptoi.getItemAt(cmbdepto.getSelectedIndex()).toString());
+			int generoi=0;//Trabajar
+			int estadoc=0;
+			int estadoi=0;
+			
+			String sql="insert into tbl_empleado(emp_codigo,emp_nombre,depto_codigo,"
+					+ "emp_fechanac,emp_fechaing,genero_codigo,estciv_codigo,emp_direccion,"
+					+ "emp_correoe,emp_celular,emp_otro,estado_codigo) "
+					+ "values('"+txtidentidad.getText()+"','"+txtnombre.getText()+
+					"',"+deptoi+",'','',"+generoi+","+estadoc+",'"+txtdireccion.getText()+
+					"','"+txtcorreoe.getText()+"','"+txtmovil.getText()+"','"+txtotro.getText()
+					+"',"+estadoi+")";
+			new BaseDatos().ingresar(sql);
+			
+		}
 	}
 }

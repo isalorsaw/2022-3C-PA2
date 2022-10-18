@@ -36,4 +36,8 @@ public class BaseDatos {
 		cmbid.setSelectedIndex(0);
 		cmbnombre.setSelectedIndex(0);
 	}
+	public void ingresar(String sql)
+	{
+		//Trabajar
+	}
 }
