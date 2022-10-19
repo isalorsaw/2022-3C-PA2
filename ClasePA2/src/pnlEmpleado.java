@@ -12,6 +12,7 @@ import com.toedter.calendar.JDateChooser;
 import Clases.BaseDatos;
 
 import java.awt.event.ActionListener;
+import java.util.Calendar;
 import java.awt.event.ActionEvent;
 
 public class pnlEmpleado extends JPanel {
@@ -220,22 +221,62 @@ public class pnlEmpleado extends JPanel {
 	{
 		if(btnGuardar.getText().equals("GUARDAR"))
 		{
-			//JOptionPane.showMessageDialog(null,"Guardar");
-			//Validar los campos
-			int deptoi=Integer.parseInt(cmbdeptoi.getItemAt(cmbdepto.getSelectedIndex()).toString());
-			int generoi=0;//Trabajar
-			int estadoc=0;
-			int estadoi=0;
-			
-			String sql="insert into tbl_empleado(emp_codigo,emp_nombre,depto_codigo,"
-					+ "emp_fechanac,emp_fechaing,genero_codigo,estciv_codigo,emp_direccion,"
-					+ "emp_correoe,emp_celular,emp_otro,estado_codigo) "
-					+ "values('"+txtidentidad.getText()+"','"+txtnombre.getText()+
-					"',"+deptoi+",'','',"+generoi+","+estadoc+",'"+txtdireccion.getText()+
-					"','"+txtcorreoe.getText()+"','"+txtmovil.getText()+"','"+txtotro.getText()
-					+"',"+estadoi+")";
-			new BaseDatos().ingresar(sql);
+			if(txtidentidad.getText().isEmpty())
+			{
+				JOptionPane.showMessageDialog(null,"Favor INgrese una Identidad","Invalido",
+						JOptionPane.ERROR_MESSAGE);
+				txtidentidad.requestFocus();
+			}
+			else if(txtnombre.getText().isEmpty())
+			{
+				JOptionPane.showMessageDialog(null,"Favor INgrese un NOmbre ","Invalido",
+						JOptionPane.ERROR_MESSAGE);
+				txtnombre.requestFocus();
+			}
+			else if(cmbdepto.getSelectedIndex()==0)
+			{
+				JOptionPane.showMessageDialog(null,"Seleccione un Departamento ","Invalido",
+						JOptionPane.ERROR_MESSAGE);
+				cmbdepto.requestFocus();
+			}
+			else
+			{
+				int r=JOptionPane.showConfirmDialog(null,"Seguro que desea guardar este empleado?");
+				if(r==0)
+					{
+						guardar();
+						JOptionPane.showMessageDialog(null,"Se Guardo Satisfactoriamente");
+						limpiar();
+					}
+			}
 			
 		}
+	}
+	public void guardar()
+	{
+		int deptoi=Integer.parseInt(cmbdeptoi.getItemAt(cmbdepto.getSelectedIndex()).toString());
+		int generoi=cmbgenero.getSelectedIndex();
+		int estadoc=cmbestadoc.getSelectedIndex();
+		int estadoi=cmbestado.getSelectedIndex();
+		
+		int anio = dfechai.getCalendar().get(Calendar.YEAR);
+		int mes = dfechai.getCalendar().get(Calendar.MARCH);
+		int dia = dfechai.getCalendar().get(Calendar.DAY_OF_MONTH);
+		String fechai=anio+"-"+mes+"-"+dia;
+		
+		anio = dfechai.getCalendar().get(Calendar.YEAR);
+		mes = dfechai.getCalendar().get(Calendar.MARCH);
+		dia = dfechai.getCalendar().get(Calendar.DAY_OF_MONTH);
+		String fechan=anio+"-"+mes+"-"+dia;
+		
+		String sql="insert into tbl_empleado(emp_codigo,emp_nombre,depto_codigo,"
+				+ "emp_fechanac,emp_fechaing,genero_codigo,estciv_codigo,emp_direccion,"
+				+ "emp_correoe,emp_celular,emp_otro,estado_codigo) "
+				+ "values('"+txtidentidad.getText()+"','"+txtnombre.getText()+
+				"',"+deptoi+",'"+fechan+"','"+fechai+"',"+generoi+","+estadoc+",'"+txtdireccion.getText()+
+				"','"+txtcorreoe.getText()+"','"+txtmovil.getText()+"','"+txtotro.getText()
+				+"',"+estadoi+")";
+		//System.out.println(sql);
+		new BaseDatos().ingresar(sql);
 	}
 }

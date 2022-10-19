@@ -38,6 +38,15 @@ public class BaseDatos {
 	}
 	public void ingresar(String sql)
 	{
-		//Trabajar
+		try
+		{
+			Connection con=new Conexion().getConexion();
+			Statement stmt=con.createStatement();
+			stmt.execute(sql);
+		}
+		catch(Exception exp)
+		{
+			JOptionPane.showMessageDialog(null,"Error "+sql+" "+exp);
+		}
 	}
 }
