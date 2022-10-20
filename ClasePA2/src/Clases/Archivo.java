@@ -26,9 +26,9 @@ public class Archivo
 	}
 	public Archivo()
 	{
-		String n=DatosSesion.ruta;
-		JOptionPane.showMessageDialog(null,n);
-		new Archivo(n);
+		//String n=DatosSesion.ruta;
+		//JOptionPane.showMessageDialog(null,n);
+		//new Archivo(n);
 	}
 	public Archivo(String na)
 	{

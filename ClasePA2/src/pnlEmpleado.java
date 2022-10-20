@@ -10,6 +10,9 @@ import javax.swing.JComboBox;
 import com.toedter.calendar.JDateChooser;
 
 import Clases.BaseDatos;
+import Clases.Limit;
+import Clases.Moneda;
+import Clases.Enteros;
 
 import java.awt.event.ActionListener;
 import java.util.Calendar;
@@ -195,6 +198,8 @@ public class pnlEmpleado extends JPanel {
 		dfechai = new JDateChooser();
 		dfechai.setBounds(399, 186, 138, 20);
 		add(dfechai);
+		
+		setLimit();
 	}
 	public void limpiar()
 	{
@@ -216,6 +221,18 @@ public class pnlEmpleado extends JPanel {
 		"SELECT depto_codigo,depto_nombre FROM tbl_departamento ORDER BY depto_nombre",
 		"[Seleccione un Departamento]");
 		btnGuardar.setVisible(true);
+	}
+	public void setLimit()
+	{
+		txtidentidad.setDocument(new Limit(50,false));
+		//txtidentidad.setDocument(new Enteros(14));
+		//txtidentidad.setDocument(new Moneda(14));
+		txtnombre.setDocument(new Limit(10,true));
+		txtdireccion.setDocument(new Limit(1000,false));
+		txtcorreoe.setDocument(new Limit(300,false));
+		txtmovil.setDocument(new Enteros(10));
+		txtotro.setDocument(new Enteros(10));
+		
 	}
 	public void eventoguardar()
 	{
