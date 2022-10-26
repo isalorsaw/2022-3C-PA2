@@ -3,6 +3,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import Clases.BaseDatos;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
@@ -17,6 +20,7 @@ public class frmLogin extends JFrame {
 	private JPanel contentPane;
 	private JTextField txtUser;
 	private JPasswordField txtPass;
+	int contador=0;
 
 	/**
 	 * Launch the application.
@@ -27,6 +31,7 @@ public class frmLogin extends JFrame {
 				try {
 					frmLogin frame = new frmLogin();
 					frame.setVisible(true);
+					frame.setLocationRelativeTo(null);//Centrar el Frame
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -91,9 +96,41 @@ public class frmLogin extends JFrame {
 		}
 		else
 		{
-			String sql="";
-			//Buscar en BD
-			//LLamar a frmPrincipal
+			String sql="SELECT * FROM tbl_user WHERE user_usuario='"+txtUser.getText()+
+				"' AND user_clave='"+String.valueOf(txtPass.getPassword())+
+				"' AND user_estado='ACTIVO'";
+			boolean s=new BaseDatos().siExiste(sql);
+			if(s)
+			{
+				abrirPrincipal();
+				dispose();
+			}
+			else
+			{
+				JOptionPane.showMessageDialog(null,"Usuario y Clave Incorrecta");
+				contador++;
+				if(contador==3)
+				{
+					//Inactivar el Usuario
+					sql="UPDATE tbl_user SET user_estado='BLOQUEADO' WHERE "+
+					"user_usuario='"+txtUser.getText()+"'";
+					new BaseDatos().ingresar(sql);
+					JOptionPane.showMessageDialog(null,"El Usuario ha sido Bloqueado");
+				}
+			}
 		}
+	}
+	public void abrirPrincipal()
+	{
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					frmPrincipal frame = new frmPrincipal();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 }

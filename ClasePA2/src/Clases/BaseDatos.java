@@ -8,6 +8,25 @@ import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
 public class BaseDatos {
+	public boolean siExiste(String sql)
+	{
+		boolean siexiste=false;
+		try
+		{
+			Connection con=new Conexion().getConexion();
+			Statement stmt=con.createStatement();
+			ResultSet rs=stmt.executeQuery(sql);
+			while(rs.next())
+			{
+				siexiste=true;
+			}
+		}
+		catch(Exception exp)
+		{
+			JOptionPane.showMessageDialog(null,exp+" "+sql);
+		}
+		return siexiste;
+	}
 	public void llenarComboBox(JComboBox cmbid, JComboBox cmbnombre, String sql, String plinea)
 	{
 		cmbid.removeAllItems();
@@ -28,6 +47,7 @@ public class BaseDatos {
 				cmbid.addItem(codigo);
 				cmbnombre.addItem(nombre);
 			}
+			con.close();
 		}
 		catch(Exception exp)
 		{
@@ -43,6 +63,7 @@ public class BaseDatos {
 			Connection con=new Conexion().getConexion();
 			Statement stmt=con.createStatement();
 			stmt.execute(sql);
+			con.close();
 		}
 		catch(Exception exp)
 		{
