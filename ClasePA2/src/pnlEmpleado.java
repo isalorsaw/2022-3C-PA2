@@ -31,6 +31,8 @@ public class pnlEmpleado extends JPanel {
 	private JDateChooser dfechan;
 	private JDateChooser dfechai;
 	private JButton btnGuardar;
+	private JLabel lblempleado;
+	private JComboBox cmbempleado,cmbempleadoi;
 	/**
 	 * Create the panel.
 	 */
@@ -49,9 +51,10 @@ public class pnlEmpleado extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				limpiar();
 				btnGuardar.setText("GUARDAR");
+				mostrarListado(false);
 			}
 		});
-		btnNewButton.setBounds(46, 65, 89, 23);
+		btnNewButton.setBounds(44, 42, 89, 23);
 		add(btnNewButton);
 		
 		JButton btnModificar = new JButton("Modificar");
@@ -59,9 +62,11 @@ public class pnlEmpleado extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				limpiar();
 				btnGuardar.setText("MODIFICAR");
+				mostrarListado(true);
+				mostrarEmpleados(1);
 			}
 		});
-		btnModificar.setBounds(174, 65, 89, 23);
+		btnModificar.setBounds(172, 42, 89, 23);
 		add(btnModificar);
 		
 		JButton btnEliminar = new JButton("Deshabilitar");
@@ -69,9 +74,11 @@ public class pnlEmpleado extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				limpiar();
 				btnGuardar.setText("DAR DE BAJA");
+				mostrarListado(true);
+				mostrarEmpleados(1);
 			}
 		});
-		btnEliminar.setBounds(313, 65, 89, 23);
+		btnEliminar.setBounds(311, 42, 89, 23);
 		add(btnEliminar);
 		
 		JButton btnRestaurar = new JButton("Habilitar");
@@ -79,9 +86,11 @@ public class pnlEmpleado extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				limpiar();
 				btnGuardar.setText("RESTAURAR");
+				mostrarListado(true);
+				mostrarEmpleados(2);
 			}
 		});
-		btnRestaurar.setBounds(448, 65, 89, 23);
+		btnRestaurar.setBounds(446, 42, 89, 23);
 		add(btnRestaurar);
 		
 		btnGuardar = new JButton("Guardar");
@@ -199,7 +208,28 @@ public class pnlEmpleado extends JPanel {
 		dfechai.setBounds(399, 186, 138, 20);
 		add(dfechai);
 		
+		lblempleado = new JLabel("Listado de Empleados");
+		lblempleado.setBounds(93, 76, 207, 14);
+		add(lblempleado);
+		
+		cmbempleadoi=new JComboBox();
+		cmbempleado = new JComboBox();
+		cmbempleado.setBounds(235, 75, 233, 22);
+		add(cmbempleado);
+		
 		setLimit();
+		mostrarListado(false);
+	}
+	public void mostrarEmpleados(int estado)
+	{
+		String sql="SELECT emp_codigo,emp_nombre FROM tbl_empleado where estado_codigo="+estado+" ORDER BY emp_nombre";
+		new BaseDatos().llenarComboBox2(cmbempleadoi,cmbempleado,sql,
+				"[Seleccione un Empleado]");
+	}
+	public void mostrarListado(boolean b)
+	{
+		cmbempleado.setVisible(b);
+		lblempleado.setVisible(b);
 	}
 	public void limpiar()
 	{

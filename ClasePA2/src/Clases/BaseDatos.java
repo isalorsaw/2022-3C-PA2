@@ -56,6 +56,35 @@ public class BaseDatos {
 		cmbid.setSelectedIndex(0);
 		cmbnombre.setSelectedIndex(0);
 	}
+	public void llenarComboBox2(JComboBox cmbid, JComboBox cmbnombre, String sql, String plinea)
+	{
+		cmbid.removeAllItems();
+		cmbnombre.removeAllItems();
+		
+		cmbid.addItem("");
+		cmbnombre.addItem(plinea);
+		
+		try
+		{
+			Connection con=new Conexion().getConexion();
+			Statement stmt=con.createStatement();
+			ResultSet rs=stmt.executeQuery(sql);
+			while(rs.next())
+			{
+				String codigo=rs.getString(1);
+				String nombre=rs.getString(2);
+				cmbid.addItem(codigo);
+				cmbnombre.addItem(nombre);
+			}
+			con.close();
+		}
+		catch(Exception exp)
+		{
+			JOptionPane.showMessageDialog(null,"Error "+sql+" "+exp);
+		}
+		cmbid.setSelectedIndex(0);
+		cmbnombre.setSelectedIndex(0);
+	}
 	public void ingresar(String sql)
 	{
 		try
