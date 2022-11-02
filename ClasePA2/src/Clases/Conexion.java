@@ -38,7 +38,7 @@ public class Conexion
  		db = arc[0].split(";")[1];
  		url = "jdbc:mysql://"+localizacion+"/"+db;
 	}
-  	Connection getConexion()
+  	public Connection getConexion()
   	{
 		try
 		{

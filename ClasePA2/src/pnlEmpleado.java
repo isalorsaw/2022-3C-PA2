@@ -10,15 +10,23 @@ import javax.swing.JComboBox;
 import com.toedter.calendar.JDateChooser;
 
 import Clases.BaseDatos;
+import Clases.Conexion;
 import Clases.Limit;
 import Clases.Moneda;
 import Clases.Enteros;
 
 import java.awt.event.ActionListener;
 import java.util.Calendar;
+import java.util.Date;
 import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeListener;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.beans.PropertyChangeEvent;
 
-public class pnlEmpleado extends JPanel {
+public class pnlEmpleado extends JPanel{
 	private JTextField txtidentidad;
 	private JTextField txtnombre, txtmovil, txtotro;
 	private JComboBox cmbdepto,cmbgenero,cmbdeptoi;
@@ -214,11 +222,67 @@ public class pnlEmpleado extends JPanel {
 		
 		cmbempleadoi=new JComboBox();
 		cmbempleado = new JComboBox();
+		cmbempleado.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//JOptionPane.showMessageDialog(null,""+cmbempleado.getSelectedIndex());
+				int indice=cmbempleado.getSelectedIndex();
+				
+				if(indice!=0)
+				{
+					String cedula=""+cmbempleadoi.getItemAt(indice);
+					//JOptionPane.showMessageDialog(null,cedula);
+					llenarCampos(cedula);
+				}
+			}
+		});
+		/*cmbempleado.addItemListener(new ItemListener() {
+			  public void itemStateChanged(ItemEvent itemEvent) {
+			    JOptionPane.showMessageDialog(null,""+cmbempleado.getSelectedIndex());
+			  }
+			});*/
 		cmbempleado.setBounds(235, 75, 233, 22);
 		add(cmbempleado);
 		
 		setLimit();
 		mostrarListado(false);
+	}
+	public void llenarCampos(String cedula)
+	{
+		String sql="SELECT * FROM tbl_empleado WHERE emp_codigo="+cedula;
+		try
+		{
+			Connection con=new Conexion().getConexion();
+			Statement stmt=con.createStatement();
+			ResultSet rs=stmt.executeQuery(sql);
+			while(rs.next())
+			{
+				txtidentidad.setText(rs.getString("emp_codigo"));
+				txtnombre.setText(rs.getString("emp_nombre"));
+				
+				//Llenar ComboB por Codigo
+				cmbdeptoi.setSelectedItem(rs.getInt("depto_codigo"));
+				cmbdepto.setSelectedIndex(cmbdeptoi.getSelectedIndex());
+				
+				//Llenar ComboB por Indice
+				cmbestado.setSelectedIndex(rs.getInt("estado_codigo"));
+				
+				//Llenar DateChooser desde BD
+				String fechan=rs.getString("emp_fechanac");
+				Date date=new SimpleDateFormat("yyyy-MM-dd").parse(fechan);
+				dfechan.setDate(date);
+				fechan=rs.getString("emp_fechaing");
+				date=new SimpleDateFormat("yyyy-MM-dd").parse(fechan);
+				dfechai.setDate(date);
+				
+				if(btnGuardar.getText().equals("DAR DE BAJA"))cmbestado.setSelectedIndex(2);
+				else if(btnGuardar.getText().equals("RESTAURAR"))cmbestado.setSelectedIndex(1);
+			}
+			con.close();
+		}
+		catch(Exception exp)
+		{
+			JOptionPane.showMessageDialog(null,"Error "+sql+" "+exp);
+		}
 	}
 	public void mostrarEmpleados(int estado)
 	{
@@ -257,15 +321,88 @@ public class pnlEmpleado extends JPanel {
 		txtidentidad.setDocument(new Limit(50,false));
 		//txtidentidad.setDocument(new Enteros(14));
 		//txtidentidad.setDocument(new Moneda(14));
-		txtnombre.setDocument(new Limit(10,true));
+		txtnombre.setDocument(new Limit(250,true));
 		txtdireccion.setDocument(new Limit(1000,false));
 		txtcorreoe.setDocument(new Limit(300,false));
 		txtmovil.setDocument(new Enteros(10));
 		txtotro.setDocument(new Enteros(10));
 		
 	}
+	public boolean validarCampos()
+	{
+		if(txtidentidad.getText().isEmpty())
+		{
+			JOptionPane.showMessageDialog(null,"Favor INgrese una Identidad","Invalido",
+					JOptionPane.ERROR_MESSAGE);
+			txtidentidad.requestFocus();
+			return false;
+		}
+		else if(txtnombre.getText().isEmpty())
+		{
+			JOptionPane.showMessageDialog(null,"Favor INgrese un NOmbre ","Invalido",
+					JOptionPane.ERROR_MESSAGE);
+			txtnombre.requestFocus();
+			return false;
+		}
+		else if(cmbdepto.getSelectedIndex()==0)
+		{
+			JOptionPane.showMessageDialog(null,"Seleccione un Departamento ","Invalido",
+					JOptionPane.ERROR_MESSAGE);
+			cmbdepto.requestFocus();
+			return false;
+		}
+		return true;
+	}
 	public void eventoguardar()
 	{
+		if(btnGuardar.getText().equals("DAR DE BAJA"))
+		{
+			boolean b=validarCampos();
+			if(b)
+			{
+				int r=JOptionPane.showConfirmDialog(null,"Seguro que desea dar de baja a este empleado?");
+				if(r==0)
+					{
+						modificar();
+						JOptionPane.showMessageDialog(null,"Se Retiro Satisfactoriamente");
+						limpiar();
+						mostrarListado(true);
+						mostrarEmpleados(1);
+					}
+			}
+		}
+		if(btnGuardar.getText().equals("RESTAURAR"))
+		{
+			boolean b=validarCampos();
+			if(b)
+			{
+				int r=JOptionPane.showConfirmDialog(null,"Seguro que desea habilitar a este empleado?");
+				if(r==0)
+					{
+						modificar();
+						JOptionPane.showMessageDialog(null,"Se Habilito Satisfactoriamente");
+						limpiar();
+						mostrarListado(true);
+						mostrarEmpleados(2);
+					}
+			}
+		}
+		if(btnGuardar.getText().equals("MODIFICAR"))
+		{
+			boolean b=validarCampos();
+			if(b)
+			{
+				int r=JOptionPane.showConfirmDialog(null,"Seguro que desea modificar este empleado?");
+				if(r==0)
+					{
+						modificar();
+						JOptionPane.showMessageDialog(null,"Se Modifico Satisfactoriamente");
+						limpiar();
+						mostrarListado(true);
+						mostrarEmpleados(1);
+					}
+			}
+		}
 		if(btnGuardar.getText().equals("GUARDAR"))
 		{
 			if(txtidentidad.getText().isEmpty())
@@ -307,12 +444,12 @@ public class pnlEmpleado extends JPanel {
 		int estadoi=cmbestado.getSelectedIndex();
 		
 		int anio = dfechai.getCalendar().get(Calendar.YEAR);
-		int mes = dfechai.getCalendar().get(Calendar.MARCH);
+		int mes = dfechai.getCalendar().get(Calendar.MONTH)+1;
 		int dia = dfechai.getCalendar().get(Calendar.DAY_OF_MONTH);
 		String fechai=anio+"-"+mes+"-"+dia;
 		
 		anio = dfechai.getCalendar().get(Calendar.YEAR);
-		mes = dfechai.getCalendar().get(Calendar.MARCH);
+		mes = dfechai.getCalendar().get(Calendar.MONTH)+1;
 		dia = dfechai.getCalendar().get(Calendar.DAY_OF_MONTH);
 		String fechan=anio+"-"+mes+"-"+dia;
 		
@@ -324,6 +461,39 @@ public class pnlEmpleado extends JPanel {
 				"','"+txtcorreoe.getText()+"','"+txtmovil.getText()+"','"+txtotro.getText()
 				+"',"+estadoi+")";
 		//System.out.println(sql);
+		new BaseDatos().ingresar(sql);
+	}
+	public void modificar()
+	{
+		int deptoi=Integer.parseInt(cmbdeptoi.getItemAt(cmbdepto.getSelectedIndex()).toString());
+		int generoi=cmbgenero.getSelectedIndex();
+		int estadoc=cmbestadoc.getSelectedIndex();
+		int estadoi=cmbestado.getSelectedIndex();
+		
+		int anio = dfechai.getCalendar().get(Calendar.YEAR);
+		int mes = dfechai.getCalendar().get(Calendar.MONTH)+1;
+		int dia = dfechai.getCalendar().get(Calendar.DAY_OF_MONTH);
+		String fechai=anio+"-"+mes+"-"+dia;
+		
+		anio = dfechai.getCalendar().get(Calendar.YEAR);
+		mes = dfechai.getCalendar().get(Calendar.MONTH)+1;
+		dia = dfechai.getCalendar().get(Calendar.DAY_OF_MONTH);
+		String fechan=anio+"-"+mes+"-"+dia;
+		
+		/*String sql="insert into tbl_empleado(emp_codigo,emp_nombre,depto_codigo,"
+				+ "emp_fechanac,emp_fechaing,genero_codigo,estciv_codigo,emp_direccion,"
+				+ "emp_correoe,emp_celular,emp_otro,estado_codigo) "
+				+ "values('"+txtidentidad.getText()+"','"+txtnombre.getText()+
+				"',"+deptoi+",'"+fechan+"','"+fechai+"',"+generoi+","+estadoc+",'"+txtdireccion.getText()+
+				"','"+txtcorreoe.getText()+"','"+txtmovil.getText()+"','"+txtotro.getText()
+				+"',"+estadoi+")";*/
+		String sql="update tbl_empleado set emp_nombre='"+txtnombre.getText()+
+		"',emp_nombre='"+txtnombre.getText()+"', depto_codigo="+deptoi+
+		", emp_fechanac='"+fechan+"', emp_fechaing='"+fechai+"', genero_codigo="+generoi+
+		",estciv_codigo="+estadoc+",emp_direccion='"+txtdireccion.getText()+
+		"', emp_correoe='"+txtcorreoe.getText()+"',emp_celular='"+txtmovil.getText()+
+		"',emp_otro='"+txtotro.getText()+"', estado_codigo="+estadoi+
+		" where emp_codigo='"+txtidentidad.getText()+"'";
 		new BaseDatos().ingresar(sql);
 	}
 }
