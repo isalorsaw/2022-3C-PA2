@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Clases.BaseDatos;
+import Clases.Sesion;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -102,6 +103,7 @@ public class frmLogin extends JFrame {
 			boolean s=new BaseDatos().siExiste(sql);
 			if(s)
 			{
+				Sesion.user=txtUser.getText();
 				abrirPrincipal();
 				dispose();
 			}

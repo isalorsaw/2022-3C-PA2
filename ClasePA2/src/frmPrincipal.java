@@ -3,6 +3,10 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import Clases.BaseDatos;
+import Clases.Sesion;
+
 import java.awt.Color;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -42,7 +46,7 @@ public class frmPrincipal extends JFrame {
 	 * Create the frame.
 	 */
 	public frmPrincipal() {
-		setTitle("Pantalla Principal Sistema de Inventario");
+		setTitle("Pantalla Principal Sistema de Inventario Usuario: "+Sesion.user);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 847, 550);
 		contentPane = new JPanel();
@@ -86,6 +90,7 @@ public class frmPrincipal extends JFrame {
 		btnEmpleado.setIcon(new ImageIcon(frmPrincipal.class.getResource("/Imagenes/boton.png")));
 		btnEmpleado.setBounds(10, 23, 95, 59);
 		pnlMenu.add(btnEmpleado);
+		btnEmpleado.setVisible(new BaseDatos().getAcceso(Sesion.user,1));
 		
 		JButton btnCliente = new JButton("Cliente");
 		btnCliente.addActionListener(new ActionListener() {
@@ -99,6 +104,7 @@ public class frmPrincipal extends JFrame {
 		btnCliente.setIcon(new ImageIcon(frmPrincipal.class.getResource("/Imagenes/boton.png")));
 		btnCliente.setBounds(115, 23, 95, 59);
 		pnlMenu.add(btnCliente);
+		btnCliente.setVisible(new BaseDatos().getAcceso(Sesion.user,2));
 		
 		JButton btnProducto = new JButton("Producto");
 		btnProducto.addActionListener(new ActionListener() {
@@ -112,6 +118,7 @@ public class frmPrincipal extends JFrame {
 		btnProducto.setIcon(new ImageIcon(frmPrincipal.class.getResource("/Imagenes/boton.png")));
 		btnProducto.setBounds(10, 92, 95, 59);
 		pnlMenu.add(btnProducto);
+		btnProducto.setVisible(new BaseDatos().getAcceso(Sesion.user,3));
 		
 		JButton btnPedido = new JButton("Pedido");
 		btnPedido.addActionListener(new ActionListener() {

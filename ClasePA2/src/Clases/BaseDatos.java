@@ -99,4 +99,31 @@ public class BaseDatos {
 			JOptionPane.showMessageDialog(null,"Error "+sql+" "+exp);
 		}
 	}
+	public boolean getAcceso(String usuario, int modulocodigo)
+	{
+		String sql="SELECT ifnull(um.user_modulo_estado,'INACTIVO')AS estado,"+
+		"m.modulo_codigo FROM tbl_modulo m LEFT OUTER JOIN tbl_user_modulo um ON "+
+		"um.user_usuario='"+usuario+"' AND um.modulo_codigo=m.modulo_codigo"
+		+ " WHERE m.modulo_codigo="+modulocodigo;
+		System.out.println(sql);
+		String estado="";
+		
+		try
+		{
+			Connection con=new Conexion().getConexion();
+			Statement stmt=con.createStatement();
+			ResultSet rs=stmt.executeQuery(sql);
+			while(rs.next())
+			{
+				estado=rs.getString("estado");
+			}
+		}
+		catch(Exception exp)
+		{
+			JOptionPane.showMessageDialog(null,exp+" "+sql);
+		}
+		//return (estado.equals("ACTIVO")?true:false);
+		if(estado.equals("ACTIVO"))return true;
+		else return false;
+	}
 }
