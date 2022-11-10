@@ -132,6 +132,7 @@ public class frmPrincipal extends JFrame {
 		btnPedido.setIcon(new ImageIcon(frmPrincipal.class.getResource("/Imagenes/boton.png")));
 		btnPedido.setBounds(115, 92, 95, 59);
 		pnlMenu.add(btnPedido);
+		btnPedido.setVisible(new BaseDatos().getAcceso(Sesion.user,4));
 		
 		JButton btnFactura = new JButton("Factura");
 		btnFactura.addActionListener(new ActionListener() {
@@ -145,6 +146,7 @@ public class frmPrincipal extends JFrame {
 		btnFactura.setIcon(new ImageIcon(frmPrincipal.class.getResource("/Imagenes/boton.png")));
 		btnFactura.setBounds(10, 168, 95, 59);
 		pnlMenu.add(btnFactura);
+		btnFactura.setVisible(new BaseDatos().getAcceso(Sesion.user,5));
 		
 		JButton btnReportes = new JButton("Reportes");
 		btnReportes.addActionListener(new ActionListener() {
@@ -158,6 +160,28 @@ public class frmPrincipal extends JFrame {
 		btnReportes.setIcon(new ImageIcon(frmPrincipal.class.getResource("/Imagenes/boton.png")));
 		btnReportes.setBounds(115, 168, 95, 59);
 		pnlMenu.add(btnReportes);
+		btnReportes.setVisible(new BaseDatos().getAcceso(Sesion.user,6));
+		
+		JButton btnAccesos = new JButton("Accesos");
+		btnAccesos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new frmAccesos().setVisible(true);
+			}
+		});
+		btnAccesos.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnAccesos.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnAccesos.setBounds(10, 248, 95, 59);
+		pnlMenu.add(btnAccesos);
+		
+		JButton btnNewButton = new JButton("Usuarios");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnNewButton.setBounds(121, 248, 89, 59);
+		pnlMenu.add(btnNewButton);
+		btnAccesos.setVisible(new BaseDatos().getAcceso(Sesion.user,8));
+		btnNewButton.setVisible(new BaseDatos().getAcceso(Sesion.user,7));
 		
 		/*JPanel pnlCentral = new JPanel();
 		pnlCentral.setBounds(224, 105, 607, 406);

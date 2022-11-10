@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 
 import Clases.BaseDatos;
 import Clases.Conexion;
+import Clases.Dialogo;
 
 import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
@@ -20,6 +21,11 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.awt.event.ActionEvent;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class frmAccesos extends JFrame {
 
@@ -57,10 +63,45 @@ public class frmAccesos extends JFrame {
 		contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(230, 49, 368, 278);
+		scrollPane.setBounds(231, 84, 368, 278);
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) 
+			{
+				int f=table.getSelectedRow();
+				int c=table.getSelectedColumn();
+				//Dialogo.mensaje("Fila Seleccionado es "+f+" Columna Seleccionada es "+c);
+				String a[]= {"[NINGUNO]","ACTIVO","INACTIVO"};
+				String est=Dialogo.pedirLista("Seleccione el Estado",a);
+				//Dialogo.mensaje(est);
+				
+				String sql="";
+				String siexiste=model.getValueAt(f,3)+"";
+				int modulocodigo=Integer.parseInt(model.getValueAt(f,0)+"");
+				String codemp=cmbempleadoi.getItemAt(cmbempleado.getSelectedIndex())+"";
+				//Dialogo.mensaje("Siexiste "+siexiste+" ModuloC "+modulocodigo+" usuario"+codemp);
+				
+				if(!est.equals("[NINGUNO]"))
+				{
+					if(siexiste.equals(""))
+					{
+						sql="insert into tbl_user_modulo values('"+codemp+"',"+modulocodigo+
+						",'"+est+"')";
+					}
+					else 
+					{
+						sql="update tbl_user_modulo set user_modulo_estado='"+est+
+						"' where user_usuario='"+codemp+"' and modulo_codigo="+modulocodigo;
+					}
+					new BaseDatos().ingresar(sql);
+					Dialogo.mensaje("Acceso Modificado Satisfactoriamente");
+					llenarCampos();
+				}
+			}
+		});
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
 				{null, null, null, null},
@@ -68,7 +109,14 @@ public class frmAccesos extends JFrame {
 			new String[] {
 				"Codigo", "Nombre", "Estado", "SiExiste"
 			}
-		));
+		) {
+			boolean[] columnEditables = new boolean[] {
+				false, false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
 		scrollPane.setViewportView(table);
 		model=(DefaultTableModel)table.getModel();
 		
@@ -79,8 +127,18 @@ public class frmAccesos extends JFrame {
 				if(cmbempleado.getSelectedIndex()>0)llenarCampos();
 			}
 		});
-		cmbempleado.setBounds(230, 11, 368, 22);
+		cmbempleado.setBounds(231, 46, 368, 22);
 		contentPane.add(cmbempleado);
+		
+		JLabel lblNewLabel = new JLabel("Empleado-Usuario");
+		lblNewLabel.setBounds(77, 50, 144, 14);
+		contentPane.add(lblNewLabel);
+		
+		JLabel lblNewLabel_1 = new JLabel("Mantenimiento de Accesos para Usuario");
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_1.setBounds(10, 11, 615, 14);
+		contentPane.add(lblNewLabel_1);
 		
 		llenarCombo();
 	}
@@ -88,7 +146,7 @@ public class frmAccesos extends JFrame {
 	{
 		model.setRowCount(0);
 		String codemp=cmbempleadoi.getItemAt(cmbempleado.getSelectedIndex())+"";
-		JOptionPane.showMessageDialog(null, codemp);
+		//JOptionPane.showMessageDialog(null, codemp);
 		String sql="SELECT\r\n"
 				+ "m.modulo_codigo,\r\n"
 				+ "m.modulo_nombre,\r\n"
