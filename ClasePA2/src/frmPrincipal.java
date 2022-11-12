@@ -176,6 +176,7 @@ public class frmPrincipal extends JFrame {
 		JButton btnNewButton = new JButton("Usuarios");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				new frmUsuario().setVisible(true);
 			}
 		});
 		btnNewButton.setBounds(121, 248, 89, 59);

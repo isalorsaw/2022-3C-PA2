@@ -54,7 +54,7 @@ public class frmAccesos extends JFrame {
 	 * Create the frame.
 	 */
 	public frmAccesos() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 665, 412);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -117,6 +117,9 @@ public class frmAccesos extends JFrame {
 				return columnEditables[column];
 			}
 		});
+		table.getColumnModel().getColumn(3).setPreferredWidth(15);
+		table.getColumnModel().getColumn(3).setMinWidth(0);
+		table.getColumnModel().getColumn(3).setMaxWidth(0);
 		scrollPane.setViewportView(table);
 		model=(DefaultTableModel)table.getModel();
 		
