@@ -63,7 +63,7 @@ public class frmAccesos extends JFrame {
 		contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(231, 84, 368, 278);
+		scrollPane.setBounds(231, 84, 368, 200);
 		contentPane.add(scrollPane);
 		
 		table = new JTable();

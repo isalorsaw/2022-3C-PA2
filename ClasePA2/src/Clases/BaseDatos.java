@@ -126,4 +126,23 @@ public class BaseDatos {
 		if(estado.equals("ACTIVO"))return true;
 		else return false;
 	}
+	public String getDato(String sql)
+	{
+		String info="";
+		try
+		{
+			Connection con=new Conexion().getConexion();
+			Statement stmt=con.createStatement();
+			ResultSet rs=stmt.executeQuery(sql);
+			while(rs.next())
+			{
+				info=rs.getString(1);
+			}
+		}
+		catch(Exception exp)
+		{
+			JOptionPane.showMessageDialog(null,exp+" "+sql);
+		}
+		return info;
+	}
 }

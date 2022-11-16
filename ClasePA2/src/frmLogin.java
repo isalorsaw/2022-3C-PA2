@@ -66,11 +66,13 @@ public class frmLogin extends JFrame {
 		contentPane.add(lblpass);
 		
 		txtUser = new JTextField();
+		txtUser.setText("admin");
 		txtUser.setBounds(127, 60, 178, 20);
 		contentPane.add(txtUser);
 		txtUser.setColumns(10);
 		
 		txtPass = new JPasswordField();
+		txtPass.setText("12345");
 		txtPass.setBounds(127, 88, 178, 20);
 		contentPane.add(txtPass);
 		
