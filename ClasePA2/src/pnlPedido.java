@@ -17,19 +17,21 @@ import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.text.DecimalFormat;
 
 public class pnlPedido extends JPanel {
 	private JTable table;
 	private JTextField txtcodigo;
 	private JTextField txtcantidad;
 	private JTextField txtprecio;
-	private JTextField textField_3;
-	private JTextField textField_4;
+	private JTextField txtsubtotal;
+	private JTextField txtimpuesto;
 	private JTextField textField_5;
-	private JTextField textField_6;
+	private JTextField txttotpagar;
 	private JComboBox cmbproductoi,cmbproducto;
 	private double impuesto;
 	private DefaultTableModel model;
+	private DecimalFormat dosdigitos;
 
 	/**
 	 * Create the panel.
@@ -60,7 +62,14 @@ public class pnlPedido extends JPanel {
 			new String[] {
 				"Codigo", "Descripcion", "Cantidad", "Precio Unitario", "Impuesto", "Total", "New column"
 			}
-		));
+		) {
+			boolean[] columnEditables = new boolean[] {
+				false, false, false, false, false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
 		table.getColumnModel().getColumn(3).setPreferredWidth(115);
 		scrollPane.setViewportView(table);
 		model=(DefaultTableModel)table.getModel();
@@ -137,26 +146,35 @@ public class pnlPedido extends JPanel {
 		lblNewLabel_2_1_1_1.setBounds(315, 361, 81, 14);
 		add(lblNewLabel_2_1_1_1);
 		
-		textField_3 = new JTextField();
-		textField_3.setBounds(416, 290, 86, 20);
-		add(textField_3);
-		textField_3.setColumns(10);
+		txtsubtotal = new JTextField();
+		txtsubtotal.setHorizontalAlignment(SwingConstants.RIGHT);
+		txtsubtotal.setEditable(false);
+		txtsubtotal.setBounds(416, 290, 86, 20);
+		add(txtsubtotal);
+		txtsubtotal.setColumns(10);
 		
-		textField_4 = new JTextField();
-		textField_4.setColumns(10);
-		textField_4.setBounds(416, 312, 86, 20);
-		add(textField_4);
+		txtimpuesto = new JTextField();
+		txtimpuesto.setHorizontalAlignment(SwingConstants.RIGHT);
+		txtimpuesto.setEditable(false);
+		txtimpuesto.setColumns(10);
+		txtimpuesto.setBounds(416, 312, 86, 20);
+		add(txtimpuesto);
 		
 		textField_5 = new JTextField();
+		textField_5.setHorizontalAlignment(SwingConstants.RIGHT);
+		textField_5.setEditable(false);
 		textField_5.setColumns(10);
 		textField_5.setBounds(416, 335, 86, 20);
 		add(textField_5);
 		
-		textField_6 = new JTextField();
-		textField_6.setColumns(10);
-		textField_6.setBounds(416, 358, 86, 20);
-		add(textField_6);
+		txttotpagar = new JTextField();
+		txttotpagar.setHorizontalAlignment(SwingConstants.RIGHT);
+		txttotpagar.setEditable(false);
+		txttotpagar.setColumns(10);
+		txttotpagar.setBounds(416, 358, 86, 20);
+		add(txttotpagar);
 		limitar();
+		dosdigitos=new DecimalFormat("0.00");
 	}
 	public void agregarEnTabla()
 	{
@@ -185,7 +203,25 @@ public class pnlPedido extends JPanel {
 			fila[4]=impu+"";
 			fila[5]=""+((preciou+impu)*cant);
 			model.addRow(fila);
+			limpiar();
+			txtcodigo.requestFocus();
+			actualizarTabla();
 		}
+	}
+	public void actualizarTabla()
+	{
+		double tsubtotal=0;
+		double timpuesto=0;
+		for(int i=0;i<model.getRowCount();i++)
+		{
+			double tcantidad=Double.parseDouble(""+model.getValueAt(i,2));
+			tsubtotal+=Double.parseDouble(""+model.getValueAt(i,3))*tcantidad;
+			timpuesto+=Double.parseDouble(""+model.getValueAt(i,4))*tcantidad;
+		}
+		txtsubtotal.setText(dosdigitos.format(timpuesto));
+		txttotpagar.setText(dosdigitos.format(tsubtotal+timpuesto));
+		txtimpuesto.setText(dosdigitos.format(timpuesto));
+		
 	}
 	public void buscarPrecio()
 	{
@@ -223,5 +259,13 @@ public class pnlPedido extends JPanel {
 	{
 		txtcodigo.setDocument(new Limit(50,true));
 		txtcantidad.setDocument(new Moneda(11));
+		model.setRowCount(0);
+	}
+	public void limpiar()
+	{
+		txtcodigo.setText("");
+		txtcantidad.setText("");
+		txtprecio.setText("");
+		cmbproducto.removeAllItems();
 	}
 }
