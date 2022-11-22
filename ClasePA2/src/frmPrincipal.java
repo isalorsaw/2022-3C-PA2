@@ -26,6 +26,7 @@ public class frmPrincipal extends JFrame {
 	private pnlPedido panelped;
 	private pnlFacturacion panelfac;
 	private pnlReporte panelrep;
+	private pnlSalario panelsal;
 	/**
 	 * Launch the application.
 	 */
@@ -181,6 +182,14 @@ public class frmPrincipal extends JFrame {
 		});
 		btnNewButton.setBounds(121, 248, 89, 59);
 		pnlMenu.add(btnNewButton);
+		
+		JButton btnNewButton_1 = new JButton("Salario");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnNewButton_1.setBounds(16, 323, 89, 59);
+		pnlMenu.add(btnNewButton_1);
 		btnAccesos.setVisible(new BaseDatos().getAcceso(Sesion.user,8));
 		btnNewButton.setVisible(new BaseDatos().getAcceso(Sesion.user,7));
 		
@@ -209,6 +218,10 @@ public class frmPrincipal extends JFrame {
 		contentPane.add(panelped);
 		
 		panelrep = new pnlReporte();
+		panelrep.setBounds(224, 105, 607, 406);
+		contentPane.add(panelrep);
+		
+		panelsal = new pnlSalario();
 		panelrep.setBounds(224, 105, 607, 406);
 		contentPane.add(panelrep);
 		
