@@ -47,6 +47,11 @@ public class pnlPedido extends JPanel {
 		add(lblNewLabel);
 		
 		JButton btnGuardar = new JButton("Guardar");
+		btnGuardar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				guardar();
+			}
+		});
 		btnGuardar.setBounds(216, 374, 89, 23);
 		add(btnGuardar);
 		
@@ -175,6 +180,31 @@ public class pnlPedido extends JPanel {
 		add(txttotpagar);
 		limitar();
 		dosdigitos=new DecimalFormat("0.00");
+	}
+	public void guardar()
+	{
+		if(model.getRowCount()>0)
+		{
+			String sql="insert into tbl_pedido";
+			//new BaseDatos().ingresar(sql);
+			
+			for(int i=0;i<model.getRowCount();i++)
+			{
+				String codigo=model.getValueAt(i,0)+"";
+				String descrip=model.getValueAt(i,1)+"";
+				String cant=model.getValueAt(i,2)+"";
+				double preciou=Double.parseDouble(model.getValueAt(i,3)+"");
+				double impuesto=Double.parseDouble(model.getValueAt(i,4)+"");
+				double importe=Double.parseDouble(model.getValueAt(i, 5)+"");
+				double descuento=Double.parseDouble(model.getValueAt(i,6)+"");
+				sql="insert into tbl_pedido_det values()";
+				//new BaseDatos().ingresar(sql);
+			}
+			Dialogo.mensaje("Pedido Guardado Satisfactoriamente");
+			limpiar();
+			model.setRowCount(0);
+		}
+		else Dialogo.mensaje("No hay info para guardar");
 	}
 	public void agregarEnTabla()
 	{
