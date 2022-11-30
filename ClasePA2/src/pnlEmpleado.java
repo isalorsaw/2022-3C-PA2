@@ -13,11 +13,14 @@ import Clases.BaseDatos;
 import Clases.Conexion;
 import Clases.Limit;
 import Clases.Moneda;
+import Clases.Reporte;
 import Clases.Enteros;
 
 import java.awt.event.ActionListener;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeListener;
 import java.sql.Connection;
@@ -242,6 +245,17 @@ public class pnlEmpleado extends JPanel{
 			});*/
 		cmbempleado.setBounds(235, 75, 233, 22);
 		add(cmbempleado);
+		
+		JButton btnPerfil = new JButton("Ver Perfil");
+		btnPerfil.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Map parameters=new HashMap();
+				parameters.put("empleado_codigo",txtidentidad.getText());
+				Reporte r=new Reporte(parameters,"Reportes/Rep_PerfilEmpleado.jasper");
+			}
+		});
+		btnPerfil.setBounds(409, 372, 89, 23);
+		add(btnPerfil);
 		
 		setLimit();
 		mostrarListado(false);
