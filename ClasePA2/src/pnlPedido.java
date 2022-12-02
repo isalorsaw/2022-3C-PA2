@@ -12,12 +12,15 @@ import Clases.Dialogo;
 import Clases.Enteros;
 import Clases.Limit;
 import Clases.Moneda;
+import Clases.Reporte;
 
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 public class pnlPedido extends JPanel {
 	private JTable table;
@@ -185,7 +188,7 @@ public class pnlPedido extends JPanel {
 	{
 		if(model.getRowCount()>0)
 		{
-			String sql="insert into tbl_pedido";
+			/*String sql="insert into tbl_pedido";
 			//new BaseDatos().ingresar(sql);
 			
 			for(int i=0;i<model.getRowCount();i++)
@@ -203,6 +206,10 @@ public class pnlPedido extends JPanel {
 			Dialogo.mensaje("Pedido Guardado Satisfactoriamente");
 			limpiar();
 			model.setRowCount(0);
+			*/
+			Map parameters=new HashMap();
+			parameters.put("pedido_codigo",1);//codigo_pedido
+			Reporte r=new Reporte(parameters,"src/Reportes/Factura.jasper");
 		}
 		else Dialogo.mensaje("No hay info para guardar");
 	}

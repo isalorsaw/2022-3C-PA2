@@ -251,7 +251,7 @@ public class pnlEmpleado extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				Map parameters=new HashMap();
 				parameters.put("empleado_codigo",txtidentidad.getText());
-				Reporte r=new Reporte(parameters,"Reportes/Rep_PerfilEmpleado.jasper");
+				Reporte r=new Reporte(parameters,"src/Reportes/Rep_PerfilEmpleado.jasper");
 			}
 		});
 		btnPerfil.setBounds(409, 372, 89, 23);

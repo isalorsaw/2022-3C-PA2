@@ -39,16 +39,14 @@ public class Reporte
 {
 	public Reporte(Map parameters, String n)
 	{
-		System.out.println(n);
 		try
 		{
-			URL urlMaestro = getClass().getResource(n);
-			JasperReport masterReport = (JasperReport) JRLoader.loadObject(urlMaestro);
-            masterReport.setWhenNoDataType(masterReport.WHEN_NO_DATA_TYPE_ALL_SECTIONS_NO_DETAIL);
-            Connection con=new Conexion().getConexion();
-			JasperPrint jasperPrint = null;
-			jasperPrint= JasperFillManager.fillReport(masterReport,parameters,con);
-			
+			File file=new File(n);
+	        n=file.getAbsolutePath();
+			System.out.println("Ruta"+n);
+			Connection con=new Conexion().getConexion();
+			JasperPrint jasperPrint=(JasperPrint)JasperFillManager.fillReport(n, parameters,con);
+            
 			JRViewer jrv = new JRViewer(jasperPrint);
 			jrv.setZoomRatio(new Float(0.99));
 			
@@ -56,17 +54,49 @@ public class Reporte
 			{
 				new Visor_Reportes(jrv,"Vista de Reporte");
       		}
-      		else
-      		{
-      			
-      		}
-
       		try
       		{
 				con.close();
 			}catch(Exception exp){}   		
     	} 
-    	catch (Exception j) { 
+    	catch (Exception j) 
+		{ 
+    		JOptionPane.showMessageDialog(null,"Mensaje de Error:"+j.getMessage(),"Error en Reporte",0);
+      		j.printStackTrace(); 
+    	}
+	}
+	public Reporte(Map parameters, String n, boolean b)
+	{
+		try
+		{
+			File file=new File(n);
+	        n=file.getAbsolutePath();
+			System.out.println("Ruta"+n);
+			Connection con=new Conexion().getConexion();
+			JasperPrint jasperPrint=(JasperPrint)JasperFillManager.fillReport(n, parameters,con);
+            
+			if(b)
+			{
+				JRViewer jrv = new JRViewer(jasperPrint);
+				jrv.setZoomRatio(new Float(0.99));
+				
+				if(jasperPrint.getPages().isEmpty()==false)
+				{
+					new Visor_Reportes(jrv,"Vista de Reporte");
+	      		}
+			}
+			else
+			{
+				JasperPrintManager p=new JasperPrintManager();
+				p.printReport(jasperPrint, b);
+			}
+      		try
+      		{
+				con.close();
+			}catch(Exception exp){}   		
+    	} 
+    	catch (Exception j) 
+		{ 
     		JOptionPane.showMessageDialog(null,"Mensaje de Error:"+j.getMessage(),"Error en Reporte",0);
       		j.printStackTrace(); 
     	}
