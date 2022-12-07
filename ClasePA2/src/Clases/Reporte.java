@@ -65,7 +65,67 @@ public class Reporte
       		j.printStackTrace(); 
     	}
 	}
-	public Reporte(Map parameters, String n, boolean b)
+	public Reporte(Map parameters, String n,boolean b)
+	{
+		try
+		{ 
+      		File app=new File(n);
+			n=app.getAbsolutePath();			
+	  		//URL urlMaestro = getClass().getResource(n);
+            //JasperReport masterReport = (JasperReport) JRLoader.loadObject(urlMaestro);
+                        
+			//JasperPrint jasperPrint = null;
+			//jasperPrint= JasperFillManager.fillReport(masterReport,parameters,new Coneccion().getConexion());
+			Connection con=new Conexion().getConexion();
+			JasperPrint jasperPrint=(JasperPrint)JasperFillManager.fillReport(n, parameters,con);
+			JasperViewer jviewer = new JasperViewer(jasperPrint,false); 
+      		if(jasperPrint.getPages().isEmpty()==false){
+      			JasperPrintManager p = new JasperPrintManager();
+      			p.printReport(jasperPrint,b);
+      		}
+      		else {
+      			JOptionPane.showMessageDialog(null,"Reporte en Blanco, Revise su Consulta","Consulta Inválida",0);
+      		}
+      		
+    	} 
+    	catch (Exception j) { 
+    		JOptionPane.showMessageDialog(null,"Mensaje de Error:"+j.getMessage(),"Error en Reporte",0);
+      		j.printStackTrace(); 
+    	}
+	}
+	/*JasperPrint printReporte(Map parameters, String n)
+	{
+		addCompany(parameters);
+		try
+		{ 
+      		File app=new File(n);
+			String fileName=app.getCanonicalPath();			
+	  		URL urlMaestro = getClass().getResource(n);
+            JasperReport masterReport = (JasperReport) JRLoader.loadObject(urlMaestro);
+                        
+			JasperPrint jasperPrint = null;
+			jasperPrint= JasperFillManager.fillReport(masterReport,parameters,new Coneccion().getConexion());
+      		JasperViewer jviewer = new JasperViewer(jasperPrint,false); 
+      		if(jasperPrint.getPages().isEmpty()==false){
+      			//estado=true;
+      			//JasperPrintManager p = new JasperPrintManager();
+      			//p.printReport(jasperPrint,b);
+      			return jasperPrint;
+      		}
+      		else {
+      			JOptionPane.showMessageDialog(null,"Reporte en Blanco, Revise su Consulta","Consulta Inválida",0);
+      			estado=false;
+      		}
+      		
+    	} 
+    	catch (Exception j) { 
+    		new Falla().SavingFails("Error Ejecutando Reporte "+n+ " en Reporte.java "+j);
+      		JOptionPane.showMessageDialog(null,"Mensaje de Error:"+j.getMessage(),"Error en Reporte",0);
+      		j.printStackTrace(); 
+    	}
+    	return null;
+	}*/
+	/*public Reporte(Map parameters, String n, boolean b)
 	{
 		try
 		{
@@ -100,7 +160,7 @@ public class Reporte
     		JOptionPane.showMessageDialog(null,"Mensaje de Error:"+j.getMessage(),"Error en Reporte",0);
       		j.printStackTrace(); 
     	}
-	}
+	}*/
 }
 class Visor_Reportes extends JDialog
 {
