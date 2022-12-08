@@ -56,5 +56,16 @@ public class pnlProducto extends JPanel {
 		});
 		btnNewButton_1.setBounds(364, 372, 89, 23);
 		add(btnNewButton_1);
+		
+		JButton btnNewButton_2 = new JButton("Agrupacion");
+		btnNewButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Map parameters=new HashMap();
+				//parameters.put("empleado_codigo",txtidentidad.getText());
+				Reporte r=new Reporte(parameters,"src/Reportes/Rep_agrupado.jasper");
+			}
+		});
+		btnNewButton_2.setBounds(469, 372, 89, 23);
+		add(btnNewButton_2);
 	}
 }
